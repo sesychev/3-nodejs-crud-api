@@ -1,7 +1,12 @@
 // src/items/items.interface.ts
-
+import { v1 as uuidv1 } from 'uuid';
 import { Item } from "./item.interface";
 
-export interface Items {
-  [key: number]: Item;
-}
+export const items: Item[] = [
+  {
+    id: uuidv1(),
+    username: 'myName',
+    age: 69,
+    hobbies: ['a', 'b', 'c'],
+  }
+];

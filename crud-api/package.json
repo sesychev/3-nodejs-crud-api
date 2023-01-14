@@ -8,7 +8,7 @@
     "dev": "ts-node-dev --respawn --pretty --transpile-only src/index.ts",
     "start:dev": "nodemon --watch app --watch libs src/index.ts",
     "start:prod": "npm run tsc && nodemon dist",
-    "start:multi": ""
+    "start:multi": "nodemon --watch app --watch libs src/multi.ts"
   },
   "keywords": [],
   "author": "Sergey Sychev",
@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "dotenv": "^16.0.3",
-    "node-fetch": "^2.6.7",
     "uuid": "^9.0.0"
   }
 }
