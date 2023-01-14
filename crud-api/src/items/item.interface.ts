@@ -1,12 +1,10 @@
 // src/items/item.interface.ts
 
-export interface BaseItem {
-    name: string;
-    price: number;
-    description: string;
-    image: string;
-  }
-  
-  export interface Item extends BaseItem {
-    id: number;
-  }
+export interface Item {
+  id: string;
+  username: string;
+  age: number;
+  hobbies: Array<string> | [];
+}
+
+//https://stackoverflow.com/questions/43837659/guid-uuid-in-typescript-node-js-app
