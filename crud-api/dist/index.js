@@ -1,7 +1,4 @@
 "use strict";
-/**
- * Required External Modules
- */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -29,16 +26,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const http_1 = require("http");
-const dotenv = __importStar(require("dotenv"));
+exports.server = void 0;
+//Required External Modules
+const http_1 = __importDefault(require("http"));
 const process_1 = __importDefault(require("process"));
-const uuid_1 = require("uuid");
+const dotenv = __importStar(require("dotenv"));
 dotenv.config();
+const hostname = 'localhost';
+const PORT = process_1.default.env.PORT || 3000;
+const server = function () {
+    http_1.default.createServer((request, response) => {
+        response.writeHead(200, { 'Content-Type': 'text/plain' });
+        response.end('Hello, CRUD API!\n');
+    }).listen(PORT, () => {
+        console.log(`Server running at http://${hostname}:${PORT}/`);
+    });
+};
+exports.server = server;
+// Listening to http Server
 //netstat -ano | findstr :4000
 //taskkill /PID 8168 /F
 //import { itemsRouter } from "./items/items.router";
 //The basic syntax for doing this is npm uninstall -D package-name or npm uninstall --save-dev package-name
-//https://habr.com/en/post/536512/ 
+//https://habr.com/en/post/536512/
 /**
  * App Variables
  */
@@ -55,26 +65,6 @@ const posts: Post[] = [
   }
 ];
 */
-const items = [
-    {
-        id: (0, uuid_1.v1)(),
-        username: 'myName',
-        age: 69,
-        hobbies: ['a', 'b', 'c'],
-    }
-];
-const hostname = 'localhost';
-const PORT = process_1.default.env.PORT || 3000;
-// Creating http Server
-let httpServer = (0, http_1.createServer)((request, response) => {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/plain');
-    response.end('Hello, CRUD API!\n');
-});
-// Listening to http Server
-httpServer.listen(PORT, () => {
-    console.log(`Server running at http://${hostname}:${PORT}/`);
-});
 //https://wanago.io/2019/03/25/node-js-typescript-7-creating-a-server-and-receiving-requests/
 /*
 

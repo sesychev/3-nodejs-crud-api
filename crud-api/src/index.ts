@@ -2,104 +2,85 @@
 import http from 'http';
 import process from 'process';
 import * as dotenv from "dotenv";
-
-import { v1 as uuidv1 } from 'uuid';
-
-import { Item } from "./items/item.interface";
-import { items } from './items/items.interface';
-
 dotenv.config();
 
-const hostname: string | undefined | null = 'localhost';
-const PORT = process.env.PORT || 3000;
+import { Objects } from './items/items.service';
+import { object, createObject, isValidUUID, isValidItem } from './items/items.service';
 
-http.createServer((request, response) => {
-  console.log(`process.pid: ${process.pid} request received`);
-  response.writeHead(200, { 'Content-Type': 'text/plain' });
-  response.end('Hello, CRUD API!\n');
-}).listen(PORT, () => {
-  console.log(`Server running at http://${hostname}:${PORT}/`);
-});
-
-console.log(`process.pid: ${process.pid} listening on PORT: ${PORT}`);
-// Listening to http Server
-
-//netstat -ano | findstr :4000
-//taskkill /PID 8168 /F
-//import { itemsRouter } from "./items/items.router";
-//The basic syntax for doing this is npm uninstall -D package-name or npm uninstall --save-dev package-name
-
-//https://habr.com/en/post/536512/
-/**
- * App Variables
- */
-/*
-interface Post {
-  title: string;
-  content: string;
+if (!process.env.PORT) {
+  process.exit(1);
 }
 
-const posts: Post[] = [
-  {
-    title: 'Lorem ipsum',
-    content: 'Dolor sit amet'
-  }
-];
-*/
+const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
-//https://wanago.io/2019/03/25/node-js-typescript-7-creating-a-server-and-receiving-requests/
+export const server = http.createServer((request, response) => {
+  createObject(object);
 
-/*
-
-
-const server = createServer((request: IncomingMessage, response: ServerResponse) => {
+  const id = request.url?.split('/')[3];
   switch (request.url) {
-    case '/posts': {
-      response.setHeader('Content-Type', 'application/json');
-      if (request.method === 'GET') {
-        response.end(JSON.stringify(posts));
-      } else if (request.method === 'POST') {
-        getJSONDataFromRequestStream<Post>(request)
-          .then(post => {
-            posts.push(post);
-            response.end(JSON.stringify(post));
-          })
+    case `/api/users`: {
+      try {
+        if (request.method === 'GET') {
+          response.writeHead(200, { 'Content-Type': 'application/json' });
+          response.end(JSON.stringify(Objects.objects));
+        }
+        if (request.method === 'POST') {
+          response.end(JSON.stringify(Objects.objects));
+        }
+      } catch {
+        response.writeHead(500, { 'Content-Type': 'text/plain' });
+        response.end('Internal Server Error');
       }
       break;
     }
-    case '/upload': {
-      if (request.method === 'POST') {
-        const chunks: Uint8Array[] = [];
-        request.on('data', (chunk) => {
-          chunks.push(chunk);
-        });
-        request.on('end', () => {
-          const result = Buffer.concat(chunks).toString();
-          response.end(result);
-        });
+    case `/api/users/${id}`: {
+      try {
+        if (request.method === 'GET') {
+          let object;
+          if (isValidUUID(id as string)) {
+            try {
+              object = Objects.objects.find(obj => obj.id === id)
+            } catch {
+              response.writeHead(500);
+              response.end('Internal Server Error');
+            }
+            if (object) {
+              response.writeHead(200, { 'Content-Type': 'application/json' });
+              response.end(JSON.stringify(object));
+            } else {
+              response.writeHead(404, { 'content-type': 'text/plain' });
+              response.end(`id === ${id} doesn't exist`);
+            }
+          }
+          else {
+            response.writeHead(400, { 'content-type': 'text/plain' });
+            response.end(`${id} is invalid(not uuid)`);
+          }
+        }
+        if (request.method === 'POST') {
+          response.end(JSON.stringify(Objects.objects));
+        }
+        if (request.method === 'PUT') {
+          response.end(JSON.stringify(Objects.objects));
+        }
+        if (request.method === 'DELETE') {
+          response.end(JSON.stringify(Objects.objects));
+        }
+      } catch {
+        response.writeHead(500, { 'Content-Type': 'text/plain' });
+        response.end('Internal Server Error');
       }
       break;
     }
     default: {
-      response.statusCode = 404;
-      response.end();
+      response.writeHead(404, { 'Content-Type': 'text/plain' });
+      response.end('Not Found');
     }
   }
+  server.on('error', () => {
+    response.writeHead(500);
+    response.end('Internal Server Error');
+  });
+}).listen(PORT, () => {
+  console.log(`Server running as a ${process.env.NODE_ENV} process on ${PORT} port`);
 });
- 
-function getJSONDataFromRequestStream<T>(request: IncomingMessage): Promise<T> {
-  return new Promise(resolve => {
-    const chunks: Uint8Array[] = [];
-    request.on('data', (chunk) => {
-      chunks.push(chunk);
-    });
-    request.on('end', () => {
-      resolve(
-        JSON.parse(
-          Buffer.concat(chunks).toString()
-        )
-      )
-    });
-  })
-}
-*/
