@@ -2,11 +2,12 @@
 import http from 'http';
 import process from 'process';
 import * as dotenv from "dotenv";
+import { Objects, object as getObject, createObject, isValidUUID, isValidItem } from './items/items.service';
+import { Item } from './items/item.interface';
+
 dotenv.config();
 
-import { Objects } from './items/items.service';
-import { object as getObject, createObject, putObject, isValidUUID, isValidItem } from './items/items.service';
-import { Item } from './items/item.interface';
+import { v4 as uuidv4 } from 'uuid';
 
 if (!process.env.PORT) {
   process.exit(1);
@@ -14,8 +15,8 @@ if (!process.env.PORT) {
 
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
-export const server = http.createServer((request, response) => {
-  createObject(getObject); //testing
+export const server = http.createServer((request, response): void => {
+  if (isValidItem(getObject)) createObject(getObject); //testing
 
   const id = request.url?.split('/')[3];
 
@@ -25,11 +26,25 @@ export const server = http.createServer((request, response) => {
         if (request.method === 'GET') {
           response.writeHead(200, { 'Content-Type': 'application/json' });
           response.end(JSON.stringify(Objects.objects));
-        }
-        if (request.method === 'POST') {
-          response.end(JSON.stringify(Objects.objects));
-        }
-        if (request.method === 'PUT' || request.method === 'DELETE') {
+        } else if (request.method === 'POST') {
+          request.on('data', (data) => {
+            const postObject = JSON.parse(data);
+            if (isValidItem(postObject)) {
+              try {
+                postObject.id = uuidv4();
+                Objects.objects.push(postObject);
+                response.writeHead(201, { 'Content-Type': 'application/json' });
+                response.end(JSON.stringify(response.statusCode));
+              } catch {
+                response.writeHead(500);
+                response.end('Internal Server Error');
+              }
+            } else {
+              response.writeHead(404, { 'Content-Type': 'text/plain' });
+              response.end('Not Found');
+            }
+          });
+        } else if (request.method === 'PUT' || request.method === 'DELETE') {
           response.writeHead(404, { 'Content-Type': 'text/plain' });
           response.end('Not Found');
         }
@@ -51,7 +66,6 @@ export const server = http.createServer((request, response) => {
           response.end('Internal Server Error');
         }
         try {
-          //get
           if (request.method === 'GET') {
             if (object) {
               response.writeHead(200, { 'Content-Type': 'application/json' });
@@ -60,18 +74,18 @@ export const server = http.createServer((request, response) => {
               response.writeHead(404, { 'content-type': 'text/plain' });
               response.end(`id === ${id} doesn't exist`);
             }
-          }
-          //put
-          if (request.method === 'PUT') {
+          } else if (request.method === 'PUT') {
             if (object) {
-              request.on('data', (body) => {
-                const putObject = JSON.parse(body);
+              request.on('data', (data) => {
+                const putObject = JSON.parse(data);
                 if (isValidItem(getObject)) {
                   Objects.objects.map((obj, index) => {
-                    if (obj.id === id) Objects.objects[index] = { ...obj, ...putObject };
+                    if (obj.id === id) {
+                      Objects.objects[index] = { ...obj, ...putObject };
+                      response.writeHead(200, { 'Content-Type': 'application/json' });
+                      response.end(JSON.stringify(response.statusCode));
+                    }
                   })
-                  response.writeHead(200, { 'Content-Type': 'application/json' });
-                  response.end(JSON.stringify(response.statusCode));
                 } else {
                   response.writeHead(400, { 'content-type': 'text/plain' });
                   response.end(`request body does not contain required fields`);
@@ -81,9 +95,7 @@ export const server = http.createServer((request, response) => {
               response.writeHead(404, { 'content-type': 'text/plain' });
               response.end(`id === ${id} doesn't exist`);
             }
-          }
-          //delete
-          if (request.method === 'DELETE') {
+          } else if (request.method === 'DELETE') {
             if (object) {
               Objects.objects = Objects.objects.filter(obj => obj.id !== id)
               response.writeHead(204, { 'content-type': 'text/plain' });

@@ -20,10 +20,6 @@ export function createObject(object: BaseItem) {
   Objects.objects.push(newObject);
 }
 
-export function putObject(object: BaseItem) {
-  return object;
-}
-
 export function isValidUUID(id: string): boolean {
   return validate(id);
 }
@@ -31,5 +27,9 @@ export function isValidUUID(id: string): boolean {
 export function isValidItem(item: BaseItem): boolean {
   if (Object.keys(item).length !== 3) return false;
   if (typeof item.username !== 'string' || typeof item.age !== 'number' || !Array.isArray(item.hobbies)) return false;
-  return item.hobbies.find(item => typeof item !== 'string') !== undefined;
+  item.hobbies.forEach(element => {
+    if (typeof element !== 'string') return false;
+  })
+
+  return true;
 }
