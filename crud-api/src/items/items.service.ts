@@ -20,6 +20,10 @@ export function createObject(object: BaseItem) {
   Objects.objects.push(newObject);
 }
 
+export function putObject(object: BaseItem) {
+  return object;
+}
+
 export function isValidUUID(id: string): boolean {
   return validate(id);
 }
