@@ -41,7 +41,9 @@ export const server = http.createServer((request, response) => {
     }
     case `/api/users/${id}`: {
       if (isValidUUID(id as string)) {
+
         let object: Item | undefined;
+
         try {
           object = Objects.objects.find(obj => obj.id === id)
         } catch {
@@ -82,8 +84,14 @@ export const server = http.createServer((request, response) => {
           }
           //delete
           if (request.method === 'DELETE') {
-            //tbd
-            response.end(JSON.stringify(Objects.objects));
+            if (object) {
+              Objects.objects = Objects.objects.filter(obj => obj.id !== id)
+              response.writeHead(204, { 'content-type': 'text/plain' });
+              response.end(`the record is found and deleted`);
+            } else {
+              response.writeHead(404, { 'content-type': 'text/plain' });
+              response.end(`id === ${id} doesn't exist`);
+            }
           }
           if (request.method === 'POST') {
             response.writeHead(404, { 'Content-Type': 'text/plain' });
