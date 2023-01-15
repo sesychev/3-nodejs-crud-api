@@ -12,6 +12,12 @@ export const object = {
   hobbies: ['a', 'b', 'c'],
 }
 
+export const postobject = {
+  username: 'myName',
+  age: 99,
+  hobbies: ['c', 'b', 'a'],
+}
+
 export function createObject(object: BaseItem) {
   let newObject = {
     id: uuidv4(),

@@ -2,12 +2,11 @@
 import http from 'http';
 import process from 'process';
 import * as dotenv from "dotenv";
-import { Objects, object as getObject, createObject, isValidUUID, isValidItem } from './items/items.service';
+import { v4 as uuidv4 } from 'uuid';
+import { Objects, object as testObject, createObject, isValidUUID, isValidItem } from './items/items.service';
 import { Item } from './items/item.interface';
 
 dotenv.config();
-
-import { v4 as uuidv4 } from 'uuid';
 
 if (!process.env.PORT) {
   process.exit(1);
@@ -16,7 +15,7 @@ if (!process.env.PORT) {
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
 export const server = http.createServer((request, response): void => {
-  if (isValidItem(getObject)) createObject(getObject); //testing
+  if (isValidItem(testObject)) createObject(testObject); //testing
 
   const id = request.url?.split('/')[3];
 
@@ -29,10 +28,14 @@ export const server = http.createServer((request, response): void => {
         } else if (request.method === 'POST') {
           request.on('data', (data) => {
             const postObject = JSON.parse(data);
+
             if (isValidItem(postObject)) {
               try {
-                postObject.id = uuidv4();
-                Objects.objects.push(postObject);
+                let newObject = {
+                  id: uuidv4(),
+                  ...postObject,
+                };
+                Objects.objects.push(newObject);
                 response.writeHead(201, { 'Content-Type': 'application/json' });
                 response.end(JSON.stringify(response.statusCode));
               } catch {
@@ -56,7 +59,6 @@ export const server = http.createServer((request, response): void => {
     }
     case `/api/users/${id}`: {
       if (isValidUUID(id as string)) {
-
         let object: Item | undefined;
 
         try {
@@ -78,7 +80,7 @@ export const server = http.createServer((request, response): void => {
             if (object) {
               request.on('data', (data) => {
                 const putObject = JSON.parse(data);
-                if (isValidItem(getObject)) {
+                if (isValidItem(putObject)) {
                   Objects.objects.map((obj, index) => {
                     if (obj.id === id) {
                       Objects.objects[index] = { ...obj, ...putObject };
