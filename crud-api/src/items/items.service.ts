@@ -7,14 +7,20 @@ export const Objects: Items = {
 };
 
 export const object = {
-  username: 'myName',
+  username: 'object',
   age: 69,
   hobbies: ['a', 'b', 'c'],
 }
 
-export const postobject = {
-  username: 'myName',
+export const postObject = {
+  username: 'postObject',
   age: 99,
+  hobbies: ['c', 'b', 'a'],
+}
+
+export const putObject = {
+  username: 'putObject',
+  age: 100,
   hobbies: ['c', 'b', 'a'],
 }
 
