@@ -3,7 +3,7 @@ import http from 'http';
 import process from 'process';
 import * as dotenv from "dotenv";
 import { v4 as uuidv4 } from 'uuid';
-import { Objects, object as testObject, createObject, isValidUUID, isValidItem } from './items/items.service';
+import { Objects, object as testObject, createObject, isValidUUID, isValidItem, postObject, putObject } from './items/items.service';
 import { Item } from './items/item.interface';
 
 dotenv.config();
@@ -79,11 +79,12 @@ export const server = http.createServer((request, response): void => {
           } else if (request.method === 'PUT') {
             if (object) {
               request.on('data', (data) => {
+
                 const putObject = JSON.parse(data);
                 if (isValidItem(putObject)) {
-                  Objects.objects.map((obj, index) => {
+                  Objects.objects.forEach((obj, index) => {
                     if (obj.id === id) {
-                      Objects.objects[index] = { ...obj, ...putObject };
+                      Objects.objects[index] = { id: id, ...putObject };
                       response.writeHead(200, { 'Content-Type': 'application/json' });
                       response.end(JSON.stringify(response.statusCode));
                     }
@@ -101,7 +102,7 @@ export const server = http.createServer((request, response): void => {
             if (object) {
               Objects.objects = Objects.objects.filter(obj => obj.id !== id)
               response.writeHead(204, { 'content-type': 'text/plain' });
-              response.end(`the record is found and deleted`);
+              response.end(JSON.stringify(response.statusCode));
             } else {
               response.writeHead(404, { 'content-type': 'text/plain' });
               response.end(`id === ${id} doesn't exist`);
