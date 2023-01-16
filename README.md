@@ -6,22 +6,22 @@ Description
 
 Clone/download repo
 
-Rename example.env to .env
+Rename `example.env` to `.env`
 
-Installation: npm install
+Installation: `npm install`
 
-Development: npm script start:dev
+Development: `npm run start:dev`
 
-The application is run in development mode using nodemon
+The application is run in development mode using `nodemon`
 
-App served http://localhost:4000 with nodemon
+App served `http://localhost:4000` with `nodemon`
 
-Production: npm script start:prod
+Production: `npm run start:prod`
 
 The application is run in production mode
 
-Horizontal scaling: npm run start:multi
+Horizontal scaling: `npm run start:multi`
 
 The application starts multiple instances of the application
 
-Note: use createObject method for testing app
+Note: use `createObject` method for testing app
