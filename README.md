@@ -1,8 +1,4 @@
-# 3-nodejs-crud-api
-
-CRUD API
-
-Description
+# CRUD API
 
 Clone/download repo
 
