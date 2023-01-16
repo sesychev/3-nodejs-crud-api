@@ -1,11 +1,11 @@
 import request from 'supertest';
 import assert from 'assert';
 import { isValidUUID, postObject, putObject } from '../items/items.service';
-const { server } = require('../dist/index.js')
+import { server } from '../../src/index';
 
 describe('Example of test scenario:', () => {
   let id: string;
-  
+
   it('1. Get all records with a GET api/users request (an empty array is expected)', async () => {
     const response = await request(server)
       .get('/api/users');
