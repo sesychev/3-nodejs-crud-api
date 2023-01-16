@@ -24,4 +24,4 @@ Horizontal scaling: `npm run start:multi`
 
 The application starts multiple instances of the application
 
-Note: use `createObject` method for testing app
+Note: use `createObject` method and `Postman` API platform for testing app
