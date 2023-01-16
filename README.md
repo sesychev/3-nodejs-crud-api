@@ -1,24 +1,27 @@
 # 3-nodejs-crud-api
-RSSchool NodeJS websocket task template
-Static http server and base task packages. By default WebSocket client tries to connect to the 8080 port.
 
-Installation
+CRUD API
+
+Description
+
 Clone/download repo
-npm install
-Usage
-Development
 
-npm run start:dev
+Rename example.env to .env
 
-App served @ http://localhost:8181 with nodemon
-Production
+Installation: npm install
 
-npm run start
+Development: npm script start:dev
 
-App served @ http://localhost:8181 without nodemon
-All commands
+The application is run in development mode using nodemon
 
-Command	Description
-npm run start:dev	App served @ http://localhost:8181 with nodemon
-npm run start	App served @ http://localhost:8181 without nodemon
-Note: replace npm with yarn in package.json if you use yarn.
+App served http://localhost:4000 with nodemon
+
+Production: npm script start:prod
+
+The application is run in production mode
+
+Horizontal scaling: npm run start:multi
+
+The application starts multiple instances of the application
+
+Note: use createObject method for testing app
