@@ -15,13 +15,13 @@ export const object = {
 export const postObject = {
   username: 'postObject',
   age: 99,
-  hobbies: ['c', 'b', 'a'],
+  hobbies: ['b', 'b', 'b'],
 }
 
 export const putObject = {
   username: 'putObject',
   age: 100,
-  hobbies: ['c', 'b', 'a'],
+  hobbies: ['c', 'c', 'c'],
 }
 
 export function createObject(object: BaseItem) {
@@ -45,3 +45,6 @@ export function isValidItem(item: BaseItem): boolean {
 
   return true;
 }
+
+//netstat -ano | findstr :<PORT>
+//taskkill /PID <PID> /F
