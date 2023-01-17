@@ -3,7 +3,7 @@ import http from 'http';
 import process from 'process';
 import * as dotenv from "dotenv";
 import { v4 as uuidv4 } from 'uuid';
-import { Objects, object as testObject, createObject, isValidUUID, isValidItem, postObject, putObject } from './items/items.service';
+import { Objects, isValidUUID, isValidItem } from './items/items.service';
 import { Item } from './items/item.interface';
 
 dotenv.config();
