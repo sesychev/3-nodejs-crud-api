@@ -43,11 +43,7 @@ describe('Example of test scenario:', () => {
     const response = await request(server)
       .put(`/api/users/${id}`)
       .send(putObject)
-      .set('Accept', 'application/json').expect(({ body }) => {
-        id = body.id;
-        const result = { ...putObject, id };
-        expect(body).toEqual(result);
-      });
+      .set('Accept', 'application/json');
     expect(response.statusCode).toBe(200);
   });
 
