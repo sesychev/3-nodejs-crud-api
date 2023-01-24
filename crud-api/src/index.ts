@@ -15,8 +15,6 @@ if (!process.env.PORT) {
 const PORT: number = parseInt(process.env.PORT as string, 10) || 3000;
 
 export const server = http.createServer((request, response): void => {
-  //if (isValidItem(testObject)) createObject(testObject); //testing
-
   const id = request.url?.split('/')[3];
 
   switch (request.url) {

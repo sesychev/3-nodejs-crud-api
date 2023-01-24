@@ -29,7 +29,7 @@ describe('Example of test scenario:', () => {
     expect(isValidUUID(id)).toBe(true);
   });
 
-  it('3a. With a GET api/user/{userId} request, we try to get the created record by its id', async () => {
+  it('3a. With a GET api/user/{userId} request, we try to get the created record with a POST by its id', async () => {
     const response = await request(server)
       .get(`/api/users/${id}`)
     expect(response.statusCode).toBe(200);
