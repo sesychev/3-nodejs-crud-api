@@ -20,4 +20,8 @@ The application is run in production mode
 
 The application starts multiple instances of the application
 
+<<<<<<< HEAD
 **Note**: Use `npm run test:watch` method and `Postman` API platform for testing app
+=======
+**Note**: Use `npm run test:watch` and `Postman` API platform for testing app
+>>>>>>> fe44631e753990ba825b07b579d58f838f4e2eee
